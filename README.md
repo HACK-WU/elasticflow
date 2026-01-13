@@ -25,7 +25,7 @@ Elasticsearch Query Building and Transformation Toolkit - 一个用于简化 Ela
   - 聚合查询支持
   - 字段名映射
 
-- **QueryStringTransformer**: Query String 转换和处理（可选）
+- **QueryStringTransformer**: Query String 转换和处理
   - 字段名映射（中文 → 英文）
   - 值翻译（显示值 → 实际值）
   - 基于语法树的精确转换
