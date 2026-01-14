@@ -17,6 +17,7 @@ class QueryStringBuilder:
     将结构化的过滤条件构建为 Elasticsearch Query String 语法的查询语句。
 
     使用示例:
+        # 基础用法
         builder = QueryStringBuilder()
         builder.add_filter("status", QueryStringOperator.EQUAL, ["error"])
         builder.add_filter("level", QueryStringOperator.GTE, [3])
@@ -24,6 +25,23 @@ class QueryStringBuilder:
 
         query_string = builder.build()
         # 输出: status: "error" AND level: >=3 AND message: *timeout*
+
+        # 使用原生 Query String
+        builder.add_raw("host: web-01 AND @timestamp: [now-1h TO now]")
+
+        # 使用 Q 对象（Django 风格）
+        from elasticflow import Q
+        builder.add_q(Q(status__equal="error") | Q(level__gte=3))
+
+        # 链式调用
+        query_string = (
+            QueryStringBuilder()
+            .add_filter("message", QueryStringOperator.INCLUDE, ["timeout"])
+            .add_raw("@timestamp: [now-1h TO now]")
+            .add_q(Q(status="error"))
+            .build()
+        )
+        # 输出: message: *timeout* AND (@timestamp: [now-1h TO now]) AND (status: "error")
     """
 
     # Query String 操作符模板

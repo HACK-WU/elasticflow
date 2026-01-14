@@ -50,7 +50,7 @@ from elasticflow import QueryStringBuilder, QueryStringOperator
 # 创建构建器
 builder = QueryStringBuilder()
 
-# 添加过滤条件
+# 添加过滤条件（所有值会自动转义）
 builder.add_filter("status", QueryStringOperator.EQUAL, ["error", "warning"])
 builder.add_filter("level", QueryStringOperator.GTE, [3])
 builder.add_filter("message", QueryStringOperator.INCLUDE, ["timeout"])
@@ -167,12 +167,134 @@ builder.add_filter("tag", QueryStringOperator.EQUAL, ["tag1", "tag2"], group_rel
 # 输出: tag: ("tag1" AND "tag2")
 ```
 
-**通配符保留**：
+**原生 Query String**：
 
 ```python
-# 保留用户输入的通配符
-builder.add_filter("message", QueryStringOperator.INCLUDE, ["err*or"], is_wildcard=True)
-# 输出: message: *err*or*
+# 添加原生 Query String（不进行转义）
+builder.add_raw("status: error AND level: >=3")
+
+# 原生查询与 add_filter 条件组合
+builder.add_filter("message", QueryStringOperator.INCLUDE, ["timeout"])
+builder.add_raw("host: web-01")
+query_string = builder.build()
+# 输出: message: *timeout* AND (status: error AND level: >=3)
+```
+
+**使用 Q 对象**：
+
+```python
+from elasticflow import Q
+
+# Django 风格查询语法
+q = Q(status__equal="error") | Q(level__gte=3)
+builder.add_q(q)
+
+# 嵌套组合
+complex_q = (Q(status="error") | Q(status="warning")) & Q(level__gte=3)
+builder.add_q(complex_q)
+
+# 链式调用与 add_filter 混合使用
+builder = (
+    QueryStringBuilder()
+    .add_filter("message", QueryStringOperator.INCLUDE, ["timeout"])
+    .add_q(Q(host__equal="web-01"))
+    .add_raw("@timestamp: [now-1h TO now]")
+)
+```
+
+### Q 对象
+
+Q 对象提供了类似 Django ORM 的灵活查询组合能力，支持链式逻辑运算。
+
+#### 基础用法
+
+```python
+from elasticflow import Q
+
+# 简写形式（默认 EQUAL 操作符）
+q1 = Q(status="error")
+
+# 显式指定操作符
+q2 = Q(field="level", operator=QueryStringOperator.GTE, value=3)
+
+# Django 风格字段查找语法
+q3 = Q(status__equal="error")
+q4 = Q(message__contains="timeout")
+q5 = Q(level__gte=3)
+```
+
+#### 支持的操作符（Django 风格）
+
+| 字段查找 | 操作符 | 说明 |
+|----------|--------|------|
+| `field` | EQUAL | 精确匹配（默认） |
+| `field__equal` / `field__eq` | EQUAL | 精确匹配 |
+| `field__not_equal` / `field__neq` | NOT_EQUAL | 不等于 |
+| `field__contains` / `field__include` | INCLUDE | 包含 |
+| `field__not_contains` / `field__not_include` | NOT_INCLUDE | 不包含 |
+| `field__gt` | GT | 大于 |
+| `field__gte` | GTE | 大于等于 |
+| `field__lt` | LT | 小于 |
+| `field__lte` | LTE | 小于等于 |
+| `field__exists` | EXISTS | 字段存在 |
+| `field__not_exists` | NOT_EXISTS | 字段不存在 |
+| `field__regex` / `field__reg` | REG | 正则表达式 |
+| `field__not_regex` / `field__not_reg` | NREG | 不匹配正则 |
+
+#### 逻辑运算
+
+```python
+from elasticflow import Q
+
+# AND 逻辑
+q_and = Q(status="error") & Q(level__gte=3)
+# 输出: status: "error" AND level: >=3
+
+# OR 逻辑
+q_or = Q(status="error") | Q(status="warning")
+# 输出: status: "error" OR status: "warning"
+
+# NOT 逻辑
+q_not = ~Q(status="error")
+# 输出: NOT (status: "error")
+
+# 嵌套组合
+complex_q = (Q(status="error") | Q(status="warning")) & Q(level__gte=3)
+# 输出: (status: "error" OR status: "warning") AND level: >=3
+
+# 复杂表达式
+expression = (Q(a=1) | Q(b=2)) & ~(Q(c=3) | Q(d=4))
+```
+
+#### 与 QueryStringBuilder 配合使用
+
+```python
+from elasticflow import QueryStringBuilder, Q
+
+builder = QueryStringBuilder()
+
+# 使用 add_q 添加 Q 对象
+builder.add_q(Q(status__equal="error"))
+builder.add_q(Q(level__gte=3))
+
+# 与 add_filter 混合使用
+builder.add_filter("message", QueryStringOperator.INCLUDE, ["timeout"])
+builder.add_q(Q(host="web-01"))
+
+# 添加复杂查询条件
+complex_query = (Q(status="error") | Q(status="warning")) & Q(level__gte=3)
+builder.add_q(complex_query)
+
+query_string = builder.build()
+# 输出: message: *timeout* AND status: "error" AND level: >=3 AND host: "web-01" AND ((status: "error" OR status: "warning") AND level: >=3)
+```
+
+#### 嵌套字段支持
+
+```python
+# 使用双下划线表示嵌套字段
+q = Q(user__name__equal="admin")
+# 输出: user.name: "admin"
 ```
 
 ### DslQueryBuilder
@@ -335,6 +457,20 @@ pytest tests/test_query_string_builder.py -v
 ### 主要类
 
 - **QueryStringBuilder**: Query String 构建器
+  - `add_filter()`: 添加过滤条件（自动转义）
+  - `add_raw()`: 添加原生 Query String
+  - `add_q()`: 添加 Q 对象查询条件
+  - `build()`: 构建 Query String
+  - `clear()`: 清空所有条件
+
+- **Q**: 灵活的查询条件对象（Django 风格）
+  - `__init__()`: 初始化 Q 对象
+  - `__and__()`: AND 逻辑运算（`&`）
+  - `__or__()`: OR 逻辑运算（`|`）
+  - `__invert__()`: NOT 逻辑运算（`~`）
+  - `build()`: 构建 Query String
+  - `is_empty()`: 检查是否为空
+
 - **DslQueryBuilder**: DSL 查询构建器
 - **QueryStringTransformer**: Query String 转换器
 - **QueryField**: 字段配置类
@@ -366,6 +502,20 @@ pytest tests/test_query_string_builder.py -v
 5. 开启 Pull Request
 
 ## 📝 版本历史
+
+### v0.3.0 (2026-01-14)
+
+- ✅ 重构 QueryStringBuilder
+  - 移除 `is_wildcard` 参数，所有值自动转义
+  - 优化 INCLUDE/NOT_INCLUDE 操作符模板格式
+  - 新增 `add_raw()` 方法支持原生 Query String
+  - 新增 `add_q()` 方法支持 Q 对象查询
+- ✅ 实现 Q 对象（Django 风格查询组合）
+  - 支持 Django 风格字段查找语法
+  - 支持逻辑运算符（`&`, `|`, `~`）
+  - 支持嵌套查询组合
+- ✅ 添加 `escape_query_string()` 转义工具函数
+- ✅ 完整的单元测试覆盖（93%）
 
 ### v0.2.0 (2026-01-13)
 
