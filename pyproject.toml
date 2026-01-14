@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 requires = [ "hatchling" ]
 
 [project]
-name = "es-query-toolkit"
+name = "elasticflow"
 version = "0.2.0"
 description = "Elasticsearch Query Building and Transformation Toolkit"
 readme = "README.md"
@@ -38,4 +38,27 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = [ "src/es_query_toolkit" ]
+packages = [ "src/elasticflow" ]
+
+[tool.ruff]
+format.docstring-code-format = true
+lint.select = [ "E4", "E7", "E9", "F", "UP" ]
+lint.extend-ignore = [ "E402" ]
+lint.fixable = [ "ALL" ]
+lint.extend-safe-fixes = [ "UP" ]
+
+[tool.pytest.ini_options]
+testpaths = [ "tests" ]
+python_files = [ "test_*.py" ]
+python_classes = [ "Test*" ]
+python_functions = [ "test_*" ]
+addopts = [
+  "--strict-markers",
+  "--strict-config",
+  "--cov=elasticflow",
+  "--cov-report=term-missing",
+]
+markers = [
+  "slow: marks tests as slow",
+  "integration: marks tests as integration tests",
+]
