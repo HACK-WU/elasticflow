@@ -501,34 +501,6 @@ pytest tests/test_query_string_builder.py -v
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 开启 Pull Request
 
-## 📝 版本历史
-
-### v0.3.0 (2026-01-14)
-
-- ✅ 重构 QueryStringBuilder
-  - 移除 `is_wildcard` 参数，所有值自动转义
-  - 优化 INCLUDE/NOT_INCLUDE 操作符模板格式
-  - 新增 `add_raw()` 方法支持原生 Query String
-  - 新增 `add_q()` 方法支持 Q 对象查询
-- ✅ 实现 Q 对象（Django 风格查询组合）
-  - 支持 Django 风格字段查找语法
-  - 支持逻辑运算符（`&`, `|`, `~`）
-  - 支持嵌套查询组合
-- ✅ 添加 `escape_query_string()` 转义工具函数
-- ✅ 完整的单元测试覆盖（93%）
-
-### v0.2.0 (2026-01-13)
-
-- ✅ 添加 QueryStringTransformer（Query String 转换器）
-- ✅ 支持字段名映射和值翻译
-- ✅ 完整的单元测试覆盖（93%）
-
-### v0.1.0 (2026-01-13)
-
-- ✅ QueryStringBuilder 实现
-- ✅ DslQueryBuilder 实现
-- ✅ 核心模块和操作符定义
-
 ## 📄 许可证
 
 本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件

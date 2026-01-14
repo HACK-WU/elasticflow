@@ -15,7 +15,7 @@
     query_string = builder.build()
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 # 导出构建器
 from elasticflow.builders import DslQueryBuilder, QueryStringBuilder
