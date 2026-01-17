@@ -8,7 +8,7 @@
     - QueryStringTransformer: 转换和处理 Query String
 
 使用示例:
-    from elasticflow import QueryStringBuilder, QueryStringOperator
+    from elasticsearch_toolkit import QueryStringBuilder, QueryStringOperator
 
     builder = QueryStringBuilder()
     builder.add_filter("status", QueryStringOperator.EQUAL, ["error"])
@@ -18,10 +18,10 @@
 __version__ = "0.3.0"
 
 # 导出构建器
-from elasticflow.builders import DslQueryBuilder, QueryStringBuilder
+from elasticsearch_toolkit.builders import DslQueryBuilder, QueryStringBuilder
 
 # 导出核心组件
-from elasticflow.core import (
+from elasticsearch_toolkit.core import (
     ConditionItem,
     ConditionParser,
     DefaultConditionParser,
@@ -35,7 +35,7 @@ from elasticflow.core import (
 )
 
 # 导出异常
-from elasticflow.exceptions import (
+from elasticsearch_toolkit.exceptions import (
     ConditionParseError,
     EsQueryToolkitError,
     QueryStringParseError,
@@ -43,7 +43,7 @@ from elasticflow.exceptions import (
 )
 
 # 导出转换器
-from elasticflow.transformers import QueryStringTransformer
+from elasticsearch_toolkit.transformers import QueryStringTransformer
 
 __all__ = [
     # 版本

@@ -2,8 +2,8 @@
 
 import pytest
 
-from elasticflow import Q, QueryStringOperator, escape_query_string
-from elasticflow.exceptions import UnsupportedOperatorError
+from elasticsearch_toolkit import Q, QueryStringOperator, escape_query_string
+from elasticsearch_toolkit.exceptions import UnsupportedOperatorError
 
 
 class TestEscapeQueryString:

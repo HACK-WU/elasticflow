@@ -1,4 +1,4 @@
-# ElasticFlow
+# Elasticsearch Toolkit
 
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -23,7 +23,7 @@ Elasticsearch Query Building and Transformation Toolkit - 一个用于简化 Ela
   - Query String 查询集成
   - 排序和分页支持
   - 聚合查询支持
-  - 字段名映射
+  - 字段名映射i
 
 - **QueryStringTransformer**: Query String 转换和处理
   - 字段名映射（中文 → 英文）
@@ -45,7 +45,7 @@ uv sync --all-groups
 ### 1. 使用 QueryStringBuilder
 
 ```python
-from elasticflow import QueryStringBuilder, QueryStringOperator
+from elasticsearch_toolkit import QueryStringBuilder, QueryStringOperator
 
 # 创建构建器
 builder = QueryStringBuilder()
@@ -65,7 +65,7 @@ print(query_string)
 
 ```python
 from elasticsearch.dsl import Search
-from elasticflow import DslQueryBuilder, FieldMapper, QueryField
+from elasticsearch_toolkit import DslQueryBuilder, FieldMapper, QueryField
 
 # 定义字段映射
 fields = [
@@ -99,7 +99,7 @@ result = search.execute()
 ### 3. 使用 QueryStringTransformer
 
 ```python
-from elasticflow import QueryStringTransformer
+from elasticsearch_toolkit import QueryStringTransformer
 
 # 创建转换器
 transformer = QueryStringTransformer(
@@ -156,7 +156,7 @@ builder.add_filter("status", "eq", ["error"])  # 使用自定义操作符名
 **多值逻辑关系**：
 
 ```python
-from elasticflow import GroupRelation
+from elasticsearch_toolkit import GroupRelation
 
 # OR 关系（默认）
 builder.add_filter("status", QueryStringOperator.EQUAL, ["error", "warning"])
@@ -183,7 +183,7 @@ query_string = builder.build()
 **使用 Q 对象**：
 
 ```python
-from elasticflow import Q
+from elasticsearch_toolkit import Q
 
 # Django 风格查询语法
 q = Q(status__equal="error") | Q(level__gte=3)
@@ -209,7 +209,7 @@ Q 对象提供了类似 Django ORM 的灵活查询组合能力，支持链式逻
 #### 基础用法
 
 ```python
-from elasticflow import Q
+from elasticsearch_toolkit import Q
 
 # 简写形式（默认 EQUAL 操作符）
 q1 = Q(status="error")
@@ -244,7 +244,7 @@ q5 = Q(level__gte=3)
 #### 逻辑运算
 
 ```python
-from elasticflow import Q
+from elasticsearch_toolkit import Q
 
 # AND 逻辑
 q_and = Q(status="error") & Q(level__gte=3)
@@ -269,7 +269,7 @@ expression = (Q(a=1) | Q(b=2)) & ~(Q(c=3) | Q(d=4))
 #### 与 QueryStringBuilder 配合使用
 
 ```python
-from elasticflow import QueryStringBuilder, Q
+from elasticsearch_toolkit import QueryStringBuilder, Q
 
 builder = QueryStringBuilder()
 
@@ -313,7 +313,7 @@ q = Q(user__name__equal="admin")
 #### 自定义条件解析器
 
 ```python
-from elasticflow import ConditionParser, ConditionItem
+from elasticsearch_toolkit import ConditionParser, ConditionItem
 from elasticsearch.dsl import Q
 
 
@@ -393,7 +393,7 @@ result = transformer.transform("致命")
 
 ```python
 # settings.py 或单独的配置文件
-from elasticflow import QueryField
+from elasticsearch_toolkit import QueryField
 
 ALERT_FIELDS = [
   QueryField(field="status", es_field="status", display="状态"),
@@ -409,7 +409,7 @@ VALUE_TRANSLATIONS = {
 
 ```python
 # views.py
-from elasticflow import DslQueryBuilder, FieldMapper, QueryStringTransformer
+from elasticsearch_toolkit import DslQueryBuilder, FieldMapper, QueryStringTransformer
 from .settings import ALERT_FIELDS, VALUE_TRANSLATIONS
 
 
@@ -446,7 +446,7 @@ def search_alerts(request):
 pytest
 
 # 运行测试并显示覆盖率
-pytest --cov=src/elasticflow --cov-report=term-missing
+pytest --cov=src/elasticsearch_toolkit --cov-report=term-missing
 
 # 运行特定测试文件
 pytest tests/test_query_string_builder.py -v

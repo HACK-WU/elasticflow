@@ -2,8 +2,8 @@
 
 import pytest
 
-from elasticflow import QueryStringTransformer
-from elasticflow.exceptions import QueryStringParseError
+from elasticsearch_toolkit import QueryStringTransformer
+from elasticsearch_toolkit.exceptions import QueryStringParseError
 
 
 class TestQueryStringTransformer:

@@ -1,6 +1,6 @@
 # Changelog
 
-本文档记录了 ElasticFlow 项目的所有重要变更。
+本文档记录了 elasticsearch_toolkit 项目的所有重要变更。
 
 ## [v0.3.0] - 2026-01-14
 

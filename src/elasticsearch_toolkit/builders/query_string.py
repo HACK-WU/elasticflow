@@ -2,12 +2,16 @@
 
 from typing import TYPE_CHECKING, Any
 
-from elasticflow.core.operators import GroupRelation, LogicOperator, QueryStringOperator
-from elasticflow.core.utils import escape_query_string
-from elasticflow.exceptions import UnsupportedOperatorError
+from elasticsearch_toolkit.core.operators import (
+    GroupRelation,
+    LogicOperator,
+    QueryStringOperator,
+)
+from elasticsearch_toolkit.core.utils import escape_query_string
+from elasticsearch_toolkit.exceptions import UnsupportedOperatorError
 
 if TYPE_CHECKING:
-    from elasticflow.core.query import Q
+    from elasticsearch_toolkit.core.query import Q
 
 
 class QueryStringBuilder:
@@ -30,7 +34,7 @@ class QueryStringBuilder:
         builder.add_raw("host: web-01 AND @timestamp: [now-1h TO now]")
 
         # 使用 Q 对象（Django 风格）
-        from elasticflow import Q
+        from elasticsearch_toolkit import Q
         builder.add_q(Q(status__equal="error") | Q(level__gte=3))
 
         # 链式调用

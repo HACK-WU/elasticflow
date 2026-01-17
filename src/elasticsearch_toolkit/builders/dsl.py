@@ -7,12 +7,12 @@ from collections.abc import Callable
 
 from elasticsearch.dsl import Q, Search
 
-from elasticflow.core.conditions import (
+from elasticsearch_toolkit.core.conditions import (
     ConditionItem,
     ConditionParser,
     DefaultConditionParser,
 )
-from elasticflow.core.fields import FieldMapper
+from elasticsearch_toolkit.core.fields import FieldMapper
 
 
 class DslQueryBuilder:

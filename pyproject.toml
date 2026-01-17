@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 requires = [ "hatchling" ]
 
 [project]
-name = "elasticflow"
+name = "elasticsearch-toolkit"
 version = "0.2.0"
 description = "Elasticsearch Query Building and Transformation Toolkit"
 readme = "README.md"
@@ -38,7 +38,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = [ "src/elasticflow" ]
+packages = [ "src/elasticsearch_toolkit" ]
 
 [tool.ruff]
 format.docstring-code-format = true
@@ -55,7 +55,7 @@ python_functions = [ "test_*" ]
 addopts = [
   "--strict-markers",
   "--strict-config",
-  "--cov=elasticflow",
+  "--cov=elasticsearch_toolkit",
   "--cov-report=term-missing",
 ]
 markers = [

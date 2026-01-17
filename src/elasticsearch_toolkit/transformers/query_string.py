@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from elasticflow.exceptions import QueryStringParseError
+from elasticsearch_toolkit.exceptions import QueryStringParseError
 
 from luqum.auto_head_tail import auto_head_tail
 from luqum.exceptions import ParseError

@@ -2,13 +2,13 @@
 
 import pytest
 
-from elasticflow import (
+from elasticsearch_toolkit import (
     GroupRelation,
     LogicOperator,
     QueryStringBuilder,
     QueryStringOperator,
 )
-from elasticflow.exceptions import UnsupportedOperatorError
+from elasticsearch_toolkit.exceptions import UnsupportedOperatorError
 
 
 class TestQueryStringBuilder:
@@ -293,7 +293,7 @@ class TestQueryStringBuilderWithQ:
 
     def test_add_q_simple(self):
         """测试添加简单 Q 对象."""
-        from elasticflow.core.query import Q
+        from elasticsearch_toolkit.core.query import Q
 
         builder = QueryStringBuilder()
         builder.add_q(Q(status__equal="error"))
@@ -302,7 +302,7 @@ class TestQueryStringBuilderWithQ:
 
     def test_add_q_with_filter(self):
         """测试 Q 对象与 filter 组合."""
-        from elasticflow.core.query import Q
+        from elasticsearch_toolkit.core.query import Q
 
         builder = QueryStringBuilder()
         builder.add_filter("app", QueryStringOperator.EQUAL, ["myapp"])
@@ -312,7 +312,7 @@ class TestQueryStringBuilderWithQ:
 
     def test_add_q_complex(self):
         """测试添加复杂 Q 对象."""
-        from elasticflow.core.query import Q
+        from elasticsearch_toolkit.core.query import Q
 
         builder = QueryStringBuilder()
         builder.add_q(Q(status__equal="error") | Q(level__gte=3))
@@ -323,7 +323,7 @@ class TestQueryStringBuilderWithQ:
 
     def test_add_q_empty(self):
         """测试添加空 Q 对象."""
-        from elasticflow.core.query import Q
+        from elasticsearch_toolkit.core.query import Q
 
         builder = QueryStringBuilder()
         builder.add_q(Q())
@@ -339,7 +339,7 @@ class TestQueryStringBuilderWithQ:
 
     def test_add_multiple_q(self):
         """测试添加多个 Q 对象."""
-        from elasticflow.core.query import Q
+        from elasticsearch_toolkit.core.query import Q
 
         builder = QueryStringBuilder()
         builder.add_q(Q(status__equal="error"))

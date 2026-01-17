@@ -1,5 +1,5 @@
 """
-elasticflow 工具函数模块
+elasticsearch_toolkit 工具函数模块
 
 提供 Query String 相关的工具函数
 """

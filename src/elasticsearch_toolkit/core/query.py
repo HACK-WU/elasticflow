@@ -6,9 +6,9 @@ Q 对象模块
 
 from typing import Any
 
-from elasticflow.core.operators import QueryStringOperator
-from elasticflow.core.utils import escape_query_string
-from elasticflow.exceptions import UnsupportedOperatorError
+from elasticsearch_toolkit.core.operators import QueryStringOperator
+from elasticsearch_toolkit.core.utils import escape_query_string
+from elasticsearch_toolkit.exceptions import UnsupportedOperatorError
 
 
 # Django 风格操作符名称到 QueryStringOperator 的映射

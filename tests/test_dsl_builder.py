@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 from elasticsearch.dsl import Q, Search
 
-from elasticflow import (
+from elasticsearch_toolkit import (
     ConditionItem,
     DefaultConditionParser,
     DslQueryBuilder,

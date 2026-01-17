@@ -8,6 +8,14 @@ repos:
           - "@commitlint/config-conventional"
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      # 检查 merge conflict
+      - id: check-merge-conflict
+      # 检查 private key
+      - id: detect-private-key
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
       - id: check-executables-have-shebangs

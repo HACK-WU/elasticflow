@@ -880,7 +880,7 @@ result = transformer.transform("致命")
 ## 4. 核心常量定义
 
 ```python
-# elasticflow/core/constants.py
+# elasticsearch_toolkit/core/constants.py
 
 class QueryStringCharacters:
     """Query String 相关字符常量"""
@@ -914,7 +914,7 @@ class QueryStringLogicOperators:
 ## 5. 异常定义
 
 ```python
-# elasticflow/exceptions.py
+# elasticsearch_toolkit/exceptions.py
 
 class EsQueryToolkitError(Exception):
     """ES Query Toolkit 基础异常"""
@@ -1018,7 +1018,7 @@ field_mapper = FieldMapper(ALERT_FIELDS)
 ### 7.1 场景：外部接口只接收 Query String
 
 ```python
-from elasticflow.builders import QueryStringBuilder, QueryStringOperator
+from elasticsearch_toolkit.builders import QueryStringBuilder, QueryStringOperator
 
 
 def build_log_query(filters: List[Dict]) -> str:
@@ -1051,8 +1051,8 @@ response = log_api.search(query=query_string)
 ### 7.2 场景：直接查询 ES
 
 ```python
-from elasticflow.builders import DslQueryBuilder, FieldMapper, QueryField
-from elasticflow.transformers import QueryStringTransformer
+from elasticsearch_toolkit.builders import DslQueryBuilder, FieldMapper, QueryField
+from elasticsearch_toolkit.transformers import QueryStringTransformer
 
 # 配置
 FIELDS = [
@@ -2581,7 +2581,7 @@ class TimeRangeQueryTool:
 #### 10.5.2 使用示例
 
 ```python
-from elasticflow.time_range import TimeRangeQueryTool, QuickTimeRange
+from elasticsearch_toolkit.time_range import TimeRangeQueryTool, QuickTimeRange
 from elasticsearch.dsl import Q
 
 # 创建时间范围工具
@@ -2863,7 +2863,7 @@ class GeoQueryTool:
 #### 10.6.2 使用示例
 
 ```python
-from elasticflow.geo import GeoQueryTool, GeoPoint, GeoBounds, GeoDistanceUnit
+from elasticsearch_toolkit.geo import GeoQueryTool, GeoPoint, GeoBounds, GeoDistanceUnit
 from elasticsearch.dsl import Q, A
 
 # 创建地理查询工具
